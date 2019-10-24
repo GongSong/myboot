@@ -47,13 +47,13 @@ public class CodeGenerator {
         gc.setOutputDir(projectPath + "/src/main/java");
         gc.setAuthor("任性");
         gc.setOpen(false);
+        gc.setServiceName("%sService");//service 命名方式
         // gc.setSwagger2(true); 实体属性 Swagger2 注解
         mpg.setGlobalConfig(gc);
 
         // 数据源配置
         DataSourceConfig dsc = new DataSourceConfig();
         dsc.setUrl("jdbc:mysql://192.168.0.103:3306/wanlv998?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=UTC");
-        // dsc.setSchemaName("public");
         dsc.setDriverName("com.mysql.cj.jdbc.Driver");
         dsc.setUsername("root");
         dsc.setPassword("abc123");
@@ -71,7 +71,6 @@ public class CodeGenerator {
 
         // 包配置
         PackageConfig pc = new PackageConfig();
-//        pc.setModuleName(scanner("模块名"));
         pc.setParent("com.yh.kuangjia");
         mpg.setPackageInfo(pc);
 
@@ -85,9 +84,6 @@ public class CodeGenerator {
 
         // 如果模板引擎是 freemarker
         String templatePath = "/templates/mapper.xml.ftl";
-        // 如果模板引擎是 velocity
-        //String templatePath = "/templates/mapper.xml.vm";
-
         // 自定义输出配置
         List<FileOutConfig> focList = new ArrayList<>();
         // 自定义配置会被优先输出
@@ -98,28 +94,11 @@ public class CodeGenerator {
                 return projectPath + "/src/main/resources/mapper/" + tableInfo.getEntityName() + "Mapper" + StringPool.DOT_XML;
             }
         });
-        /*
-        cfg.setFileCreate(new IFileCreate() {
-            @Override
-            public boolean isCreate(ConfigBuilder configBuilder, FileType fileType, String filePath) {
-                // 判断自定义文件夹是否需要创建
-                checkDir("调用默认方法创建的目录");
-                return false;
-            }
-        });
-        */
         cfg.setFileOutConfigList(focList);
         mpg.setCfg(cfg);
 
         // 配置模板
         TemplateConfig templateConfig = new TemplateConfig();
-
-        // 配置自定义输出模板
-        //指定自定义模板路径，注意不要带上.ftl/.vm, 会根据使用的模板引擎自动识别
-        // templateConfig.setEntity("templates/entity2.java");
-        // templateConfig.setService();
-        // templateConfig.setController();
-
         templateConfig.setXml(null);
         mpg.setTemplate(templateConfig);
 
@@ -127,14 +106,12 @@ public class CodeGenerator {
          * 包配置
          */
         mpg.setPackageInfo(new PackageConfig()
-                //.setModuleName("User")
                 .setParent("com.yh.kuangjia")// 自定义包路径
                 .setController("controller")// 这里是控制器包名，默认 web
                 .setEntity("entity")
                 .setMapper("dao")
                 .setService("services")
                 .setServiceImpl("services.Impl")
-//                .setXml("mapper")
         );
 
 
@@ -154,7 +131,7 @@ public class CodeGenerator {
         // 策略配置
 
         StrategyConfig strategy = new StrategyConfig();
-        strategy.setNaming(NamingStrategy.underline_to_camel);  //设置为陀峰命名
+        strategy.setNaming(NamingStrategy.no_change);  //设置为陀峰命名
         strategy.setColumnNaming(NamingStrategy.no_change);
         strategy.setEntityBuilderModel(true);
         strategy.setCapitalMode(true);
@@ -166,7 +143,8 @@ public class CodeGenerator {
         // 写于父类中的公共字段
         strategy.setSuperEntityColumns("id");
         strategy.setInclude(scanner("表名，多个英文逗号分割").split(","));
-        strategy.setControllerMappingHyphenStyle(true);
+        strategy.setControllerMappingHyphenStyle(true);//驼峰转连字符
+        //自动将数据库中表名为 user_info 格式的专为 UserInfo 命名
         strategy.setTablePrefix(pc.getModuleName() + "_");
         mpg.setStrategy(strategy);
         mpg.setTemplateEngine(new FreemarkerTemplateEngine());

@@ -37,7 +37,7 @@ public class SysAdminController extends BaseController {
     }
 
 
-    @ApiOperation(value = "登录")
+    @ApiOperation(value = "配置")
     @RequestMapping(value = "config", method = RequestMethod.GET)
     public Result config() {
         return service.config(this.GetTokenAdmin().getAdminId());

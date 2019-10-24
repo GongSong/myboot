@@ -10,6 +10,7 @@ import lombok.Data;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Data
 public class AdminUserConfig implements Serializable {
@@ -56,6 +57,8 @@ public class AdminUserConfig implements Serializable {
     @TableField("create_time")
     private Date createTime;
 
-    private List<SysRightList> menus;
+    private List<Map<String,Object>> menus;
+
+    private List<Map<String,Object>> routers;
 
 }
