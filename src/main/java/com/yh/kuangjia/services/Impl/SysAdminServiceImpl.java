@@ -14,7 +14,6 @@ import com.yh.kuangjia.entity.SysRight;
 import com.yh.kuangjia.entity.SysRoleRight;
 import com.yh.kuangjia.models.AdminUser.AdminUserConfig;
 import com.yh.kuangjia.models.AdminUser.AdminUserLogin;
-import com.yh.kuangjia.models.SysRight.SysRightList;
 import com.yh.kuangjia.services.ISysAdminService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yh.kuangjia.util.AdapterUtil;
@@ -101,10 +100,10 @@ public class SysAdminServiceImpl extends ServiceImpl<SysAdminMapper, SysAdmin> i
                 map.put("subs", list2);
             }
             Map<String, Object> router = Maps.newHashMap();
-            router.put("title",o.getRightName());
-            router.put("route",o.getRightValue());
-            router.put("path",o.getRightValue().toLowerCase());
-            router.put("rights",new ArrayList<>());
+            router.put("title", o.getRightName());
+            router.put("route", o.getRightValue());
+            router.put("path", o.getRightValue().toLowerCase());
+            router.put("rights", new ArrayList<>());
             menus.add(map);
             routers.add(router);
         });

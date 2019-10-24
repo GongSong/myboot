@@ -80,5 +80,4 @@ public class SysAdmin extends BaseEntity {
     @TableField("is_del")
     private Boolean isDel;
 
-
 }

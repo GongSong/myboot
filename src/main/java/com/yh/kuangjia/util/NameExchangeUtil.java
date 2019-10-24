@@ -22,7 +22,16 @@ public class NameExchangeUtil {
                 result.append(s.substring(1).toLowerCase());
             }
         }
-        return result.toString();
+        return upperCase(result.toString());
+    }
+
+    /**
+     * 首字母大写
+     * @param str
+     * @return
+     */
+    public static String upperCase(String str) {
+        return str.substring(0, 1).toUpperCase() + str.substring(1);
     }
 
     /***
