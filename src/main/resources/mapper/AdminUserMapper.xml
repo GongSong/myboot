@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yh.kuangjia.dao.AdminUserMapper">
+
+    <select id="GetSuperMenuRights" resultType="com.yh.kuangjia.models.AdminUser.AdminUserRightList">
+SELECT 	right_id,	group_id,	right_name  as title,	router_name  as name,	component_path  as component,	icon,	url_path  as path
+FROM
+	admin_right
+WHERE
+	parent_id = 0	AND is_menu = 1
+		order by sort desc
+  </select>
+
+    <select id="GetAdminUserMenuRights"  parameterType="java.lang.String" resultType="com.yh.kuangjia.models.AdminUser.AdminUserRightList">
+SELECT 	B.right_id,	B.group_id,	B.right_name as title,	B.router_name  as name,	B.component_path as component,	B.icon,	B.url_path  as path
+FROM
+	( SELECT right_id FROM admin_role_right WHERE role_id IN ( #{roleids,jdbcType=VARCHAR} ) ) AS A
+	INNER JOIN admin_right AS B ON A.right_id = B.right_id
+WHERE
+	B.parent_id = 0
+	AND B.is_menu = 1
+		order by sort desc
+  </select>
+</mapper>

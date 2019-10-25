@@ -1,32 +1,19 @@
 package com.yh.kuangjia.models.AdminUser;
 
+import com.yh.kuangjia.core.annotation.ParamCheck;
+import lombok.Data;
+
 import java.io.Serializable;
 
+@Data
 public class AdminUserLogin implements Serializable {
 
-    /**
-     * 用户名
-     */
-    private String username;
+    @ParamCheck(notNull=true)
+   /* @Check(notNull = true, maxLen = 30)
+    @Check(notNull = true, maxLen = 3)
+    @Check(maxLen = 320)*/
 
-    /**
-     * 用户密码
-     */
-    private String password;
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
+    private String user_name;
+    @ParamCheck(notNull=true)
+    private String user_pwd;
 }

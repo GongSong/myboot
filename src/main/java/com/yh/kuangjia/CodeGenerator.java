@@ -59,10 +59,10 @@ public class CodeGenerator {
             mpg.setGlobalConfig(gc);
             // 数据源配置
             DataSourceConfig dsc = new DataSourceConfig();
-            dsc.setUrl("jdbc:mysql://localhost:3306/wanlv?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=UTC");
+            dsc.setUrl("jdbc:mysql://192.168.0.103:3306/westlaw?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=UTC");
             dsc.setDriverName("com.mysql.cj.jdbc.Driver");
             dsc.setUsername("root");
-            dsc.setPassword("yh501346");
+            dsc.setPassword("abc123");
             dsc.setTypeConvert(new MySqlTypeConvert() {
                 @Override
                 public DbColumnType processTypeConvert(GlobalConfig globalConfig, String fieldType) {

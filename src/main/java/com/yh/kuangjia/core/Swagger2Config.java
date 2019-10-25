@@ -43,10 +43,10 @@ public class Swagger2Config {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("Spring Boot中使用Swagger2构建RESTful APIs")
-                .description("快班科技")
+                .title("接口文档")
+                .description("任性")
                 .termsOfServiceUrl("http://www.kuaibantech.com/")
-                .contact("快班科技")
+                .contact("任性")
                 .version("1.0")
                 .build();
     }

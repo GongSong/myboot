@@ -1,15 +1,15 @@
 package ${package.Entity};
 
-        #foreach($pkg in ${table.importPackages})
-import ${pkg};
-        #end
-        #if(${swagger2})
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-#end
-        #if(${entityLombokModel})
-import lombok.Data;
-#end
+    #foreach($pkg in ${table.importPackages})
+    import ${pkg};
+    #end
+    #if(${swagger2})
+    import io.swagger.annotations.ApiModel;
+    import io.swagger.annotations.ApiModelProperty;
+    #end
+    #if(${entityLombokModel})
+    import lombok.Data;
+    #end
 import com.baomidou.mybatisplus.annotation.KeySequence;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 
@@ -19,55 +19,55 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
  * @author ${author}
  * @since ${date}
  */
-        ## 使用lombok
-        #if(${entityLombokModel})
+## 使用lombok
+#if(${entityLombokModel})
 @Data
 #end
-        ## 有NamingStrategy为true
-        #if(${table.convert})
+## 有NamingStrategy为true
+#if(${table.convert})
 @TableName("${table.name}")
 #end
-        ## 用的oracle需要KeySequence
+## 用的oracle需要KeySequence
 @KeySequence(value = "${table.name}_SEQ")
 ## swagger2
-        #if(${swagger2})
-@ApiModel(value="${entity}对象")
+#if(${swagger2})
+@ApiModel(value = "${entity}对象")
 #end
-public class ${entity} implements Serializable {
+public class ${entity} implements Serializable{
 
-        ## ----------  BEGIN 字段循环遍历  ----------
-        #foreach($field in ${table.fields})
-        ## 主键策略
-        #if(${field.keyFlag})
+## ----------  BEGIN 字段循环遍历  ----------
+#foreach($field in ${table.fields})
+## 主键策略
+    #if(${field.keyFlag})
         #if(${field.keyIdentityFlag})
-@TableId(value = "${field.name}", type = IdType.AUTO)
-#elseif(!$null.isNull(${idType}) && "$!idType" != "")
-@TableId(value = "${field.name}", type = IdType.${idType})
-#elseif(${field.convert})
-@TableId("${field.name}")
-#end
+        @TableId(value = "${field.name}", type = IdType.AUTO)
+        #elseif(!$null.isNull(${idType}) && "$!idType" != "")
+        @TableId(value = "${field.name}", type = IdType.${idType})
+        #elseif(${field.convert})
+        @TableId("${field.name}")
         #end
-        ## 自动填充
-        #if(${field.propertyName} == "dataUpdatedate")
-@TableField(fill = FieldFill.UPDATE)
-#end
-        ## swagger2字段api
-        #if("$!field.comment" != "")
+    #end
+## 自动填充
+    #if(${field.propertyName} == "dataUpdatedate")
+    @TableField(fill = FieldFill.UPDATE)
+    #end
+## swagger2字段api
+    #if("$!field.comment" != "")
         #if(${swagger2})
-        #if(${field.propertyType} == "Long" || ${field.propertyType} == "Integer")
-        #if(${field.keyFlag})
-@ApiModelProperty(value = "${field.comment},新增不传",example="1")
-#else
-@ApiModelProperty(value = "${field.comment}",example="1")
-#end
-        #else
-@ApiModelProperty(value = "${field.comment}")
-#end
+            #if(${field.propertyType} == "Long" || ${field.propertyType} == "Integer")
+                #if(${field.keyFlag})
+                @ApiModelProperty(value = "${field.comment},新增不传", example = "1")
+                #else
+                @ApiModelProperty(value = "${field.comment}", example = "1")
+                #end
+            #else
+            @ApiModelProperty(value = "${field.comment}")
+            #end
         #end
-        #end
+    #end
 private ${field.propertyType} ${field.propertyName};
 
-        #end
-        ## ----------  END 字段循环遍历  ----------
-        ## ---------- 使用的lombok,所以后面的get/set都不要 ---------------
-        }
+#end
+## ----------  END 字段循环遍历  ----------
+## ---------- 使用的lombok,所以后面的get/set都不要 ---------------
+}
