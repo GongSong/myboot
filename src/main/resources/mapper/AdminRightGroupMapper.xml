@@ -2,4 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yh.kuangjia.dao.AdminRightGroupMapper">
 
+    <select id="selectGroupNameAndGroupid" resultType="com.yh.kuangjia.models.AdminRight.AdminRightGroupList">
+    select group_id,group_name as title from admin_right_group
+  </select>
 </mapper>

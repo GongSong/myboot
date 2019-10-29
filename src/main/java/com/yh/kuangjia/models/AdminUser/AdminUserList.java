@@ -54,4 +54,10 @@ public class AdminUserList implements Serializable {
     private String email;
 
 
+    /**
+     * 是否部门主管
+     */
+    private Boolean is_dept_director;
+
+
 }

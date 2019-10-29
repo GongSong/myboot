@@ -60,5 +60,4 @@ public class AdminRightGroup extends BaseEntity {
      */
     private Integer sort;
 
-
 }

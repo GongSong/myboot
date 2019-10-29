@@ -16,8 +16,8 @@ import java.sql.SQLException;
 
 /**
  * 阿里数据库连接池 Druid配置
- * 创建者 柒
- * 创建时间  2018年3月15日
+ * 创建者 任性
+ * 创建时间  2019年10月28日
  */
 @Configuration
 public class DruidConfiguration {

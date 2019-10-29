@@ -2,6 +2,9 @@ package com.yh.kuangjia.dao;
 
 import com.yh.kuangjia.entity.AdminRightGroup;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.yh.kuangjia.models.AdminRight.AdminRightGroupList;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface AdminRightGroupMapper extends BaseMapper<AdminRightGroup> {
 
+    List<AdminRightGroupList> selectGroupNameAndGroupid();
 }

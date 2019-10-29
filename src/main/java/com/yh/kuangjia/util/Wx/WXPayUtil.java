@@ -256,6 +256,39 @@ public class WXPayUtil {
         return result;
     }
 
+    //签名
+    public static String getTicket(Map<String, String> map) {
+        String result = "";
+        try {
+            List<Map.Entry<String, String>> infoIds = new ArrayList<Map.Entry<String, String>>(map.entrySet());
+            // 对所有传入参数按照字段名的 ASCII 码从小到大排序（字典序）
+            Collections.sort(infoIds, new Comparator<Map.Entry<String, String>>() {
+
+                public int compare(Map.Entry<String, String> o1, Map.Entry<String, String> o2) {
+                    return (o1.getKey()).toString().compareTo(o2.getKey());
+                }
+            });
+
+            // 构造签名键值对的格式
+            StringBuilder sb = new StringBuilder();
+            for (Map.Entry<String, String> item : infoIds) {
+                if (item.getKey() != null || item.getKey() != "") {
+                    String key = item.getKey().toLowerCase();
+                    String val = item.getValue();
+                    if (!(val == "" || val == null)) {
+                        sb.append(key + "=" + val + "&");
+                    }
+                }
+
+            }
+            result = sb.toString().substring(0,sb.length()-1);
+
+        } catch (Exception e) {
+            return null;
+        }
+        return result;
+    }
+
 
     /**
      * 获取随机字符串 Nonce Str

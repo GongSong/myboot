@@ -7,10 +7,11 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.yh.kuangjia.models.AdminUser.AdminUserAdd;
 import com.yh.kuangjia.models.AdminUser.AdminUserFilter;
 import com.yh.kuangjia.models.AdminUser.AdminUserLogin;
+import com.yh.kuangjia.models.AdminUser.AdminUserUpdate;
 
 /**
  * <p>
- *  服务类
+ * 服务类
  * </p>
  *
  * @author 任性
@@ -27,4 +28,11 @@ public interface AdminUserService extends IService<AdminUser> {
     ResultList getUserList(AdminUserFilter filter);
 
     Result addUser(Integer adminId, AdminUserAdd adminUserAdd);
+
+    Result getInfo(int adminid);
+
+    Result updateUser(AdminUserUpdate dto);
+
+    Result updateIsDisabled(int adminid);
+
 }

@@ -2,10 +2,60 @@ package com.yh.kuangjia.util;
 
 
 
+import com.yh.kuangjia.models.Enums.AdminDeptTypeEnum;
+import com.yh.kuangjia.models.Enums.BannerTypeEnum;
+import com.yh.kuangjia.models.Enums.LogTypeEnum;
+import com.yh.kuangjia.models.SysDictionary.SysDictionaryTypesList;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class EnumHelper {
+
+
+    /**
+     * 部门类别枚举集合
+     *
+     * @return
+     */
+    public static List<SysDictionaryTypesList> GetDeptTypeEnumList() {
+        List<SysDictionaryTypesList> list = new ArrayList<SysDictionaryTypesList>();
+        for (AdminDeptTypeEnum type : AdminDeptTypeEnum.values()) {
+            SysDictionaryTypesList item = new SysDictionaryTypesList(type.getCode(), type.getName());
+            list.add(item);
+        }
+        return list;
+    }
+
+    /**
+     * 轮播类别枚举集合
+     *
+     * @return
+     */
+    public static List<SysDictionaryTypesList> GetBannerTypeEnumList() {
+        List<SysDictionaryTypesList> list = new ArrayList<SysDictionaryTypesList>();
+        for ( BannerTypeEnum type : BannerTypeEnum.values()) {
+            SysDictionaryTypesList item = new SysDictionaryTypesList(type.getCode(), type.getName());
+            list.add(item);
+        }
+        return list;
+    }
+
+
+    /**
+     * 操作日志类别枚举集合
+     *
+     * @return
+     */
+    public static List<SysDictionaryTypesList> GetLogTypeEnumList() {
+        List<SysDictionaryTypesList> list = new ArrayList<SysDictionaryTypesList>();
+        for ( LogTypeEnum type : LogTypeEnum.values()) {
+            SysDictionaryTypesList item = new SysDictionaryTypesList(type.getCode(), type.getName());
+            list.add(item);
+        }
+        return list;
+    }
+
 
     public static class Items {
         private int type_id;

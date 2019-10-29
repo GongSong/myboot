@@ -1,4 +1,4 @@
-package com.yh.kuangjia.controller;
+package com.yh.kuangjia.controller.Admin;
 
 
 import com.yh.kuangjia.base.Result;
@@ -7,15 +7,13 @@ import com.yh.kuangjia.core.annotation.IgnoreLogin;
 import com.yh.kuangjia.models.AdminUser.AdminUserAdd;
 import com.yh.kuangjia.models.AdminUser.AdminUserFilter;
 import com.yh.kuangjia.models.AdminUser.AdminUserLogin;
+import com.yh.kuangjia.models.AdminUser.AdminUserUpdate;
 import com.yh.kuangjia.services.AdminUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 import com.yh.kuangjia.core.BaseController;
 
 /**
@@ -63,5 +61,29 @@ public class AdminUserController extends BaseController {
     @RequestMapping(value = "add",method = RequestMethod.POST)
     public Result addUser(@RequestBody AdminUserAdd dto) {
         return service.addUser(this.GetTokenAdmin().getAdminId(),dto);
+    }
+
+    @ApiOperation(value = "编辑用户")
+    @RequestMapping(value = "get_info/{admin_id}",method = RequestMethod.GET)
+    public Result getInfo(@PathVariable("admin_id")Integer admin_id) {
+        return service.getInfo(admin_id);
+    }
+
+    @ApiOperation(value = "编辑用户")
+    @RequestMapping(value = "update",method = RequestMethod.POST)
+    public Result updateUser(@RequestBody AdminUserUpdate dto) {
+        return service.updateUser(dto);
+    }
+
+    @ApiOperation(value = "禁用操作")
+    @RequestMapping(value = "disabled/{admin_id}",method = RequestMethod.GET)
+    public Result updateIsDisabled(@PathVariable("admin_id")Integer admin_id) {
+        return  service.updateIsDisabled(admin_id);
+    }
+
+    @ApiOperation(value = "删除操作")
+    @RequestMapping(value = "delete/{admin_id}",method = RequestMethod.GET)
+    public Result deleteUser(@PathVariable("admin_id")Integer admin_id) {
+        return Result.success(service.removeById(admin_id));
     }
 }

@@ -6,9 +6,7 @@ import com.yh.kuangjia.dao.AdminUserMapper;
 import com.yh.kuangjia.entity.AdminDept;
 import com.yh.kuangjia.dao.AdminDeptMapper;
 import com.yh.kuangjia.entity.AdminUser;
-import com.yh.kuangjia.models.AdminDept.AdminDeptAdd;
-import com.yh.kuangjia.models.AdminDept.AdminDeptContext;
-import com.yh.kuangjia.models.AdminDept.AdminDeptViewList;
+import com.yh.kuangjia.models.AdminDept.*;
 import com.yh.kuangjia.models.Enums.AdminDeptTypeEnum;
 import com.yh.kuangjia.models.SingleID;
 import com.yh.kuangjia.services.AdminDeptService;
@@ -76,7 +74,7 @@ public class AdminDeptServiceImpl extends ServiceImpl<AdminDeptMapper, AdminDept
             return new Result(Define.INPUT_ERROR, Define.INPUT_ERROR_MSG);
         }
         mapper.delete(new QueryWrapper<AdminDept>().eq("parent_dept_id", dto.getSingle_id()));
-        if (mapper.deleteById(entity.getDept_code()) == 0) {
+        if (mapper.deleteById(entity) == 0) {
             return new Result(Define.DELETE_ERROR, Define.DELETE_ERROR_MSG);
         }
         //未添加操作记录
@@ -116,12 +114,40 @@ public class AdminDeptServiceImpl extends ServiceImpl<AdminDeptMapper, AdminDept
             String s = String.valueOf(i);
             adapter.setDept_code(adminDept.getDept_code().substring(0, adminDept.getDept_code().length() - 1) + s);
         }
-
         if (mapper.insert(adapter) == 0) {
             return new Result(Define.ADD_ERROR, Define.ADD_ERROR_MSG);
         }
         AdminDeptContext adminDeptContext = new AdminDeptContext();
         adminDeptContext.setId(adapter.getDept_id());
+        adminDeptContext.setLabel(dto.getDept_name());
+        return Result.success(adminDeptContext);
+    }
+
+    @Override
+    public Result getInfo(int dept_id) {
+        AdminDept adminDept = mapper.selectById(dept_id);
+        AdminDeptList adapter = AdapterUtil.Adapter(adminDept, AdminDeptList.class);
+        adapter.setDept_type(adminDept.getDept_type().intValue());
+        if (!adminDept.getParent_dept_id().equals(0)) {
+            adapter.setParent_dept_name(mapper.selectOne(new QueryWrapper<AdminDept>().eq("dept_id",adminDept.getParent_dept_id())).getDept_name());
+        }
+        return Result.success(adapter);
+    }
+
+    @Override
+    public Result Update(AdminDeptEdit dto) {
+        AdminDept entity = mapper.selectById(dto.getDept_id());
+        if (entity == null) {
+            return new Result(Define.INPUT_ERROR, Define.INPUT_ERROR_MSG);
+        }
+        entity.setDept_name(dto.getDept_name());
+        entity.setSort(dto.getSort());
+        entity.setCreate_time(DateUtil.GetDate());
+        if (mapper.updateById(entity) == 0) {
+            return new Result(Define.UPDATE_ERROR, Define.UPDATE_ERROR_MSG);
+        }
+        AdminDeptContext adminDeptContext = new AdminDeptContext();
+        adminDeptContext.setId(dto.getDept_id());
         adminDeptContext.setLabel(dto.getDept_name());
         return Result.success(adminDeptContext);
     }

@@ -4,6 +4,7 @@ import com.yh.kuangjia.base.Result;
 import com.yh.kuangjia.entity.AdminDept;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yh.kuangjia.models.AdminDept.AdminDeptAdd;
+import com.yh.kuangjia.models.AdminDept.AdminDeptEdit;
 import com.yh.kuangjia.models.SingleID;
 
 /**
@@ -25,4 +26,8 @@ public interface AdminDeptService extends IService<AdminDept> {
     Result view(int  dept_id);
 
     Result Add(int adminID, AdminDeptAdd dto);
+
+    Result getInfo(int  dept_id);
+
+    Result Update(AdminDeptEdit dto);
 }

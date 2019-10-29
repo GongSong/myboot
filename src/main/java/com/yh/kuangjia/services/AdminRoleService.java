@@ -3,6 +3,7 @@ package com.yh.kuangjia.services;
 import com.yh.kuangjia.base.Result;
 import com.yh.kuangjia.entity.AdminRole;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.yh.kuangjia.models.AdminRole.AdminRoleUpdate;
 
 /**
  * <p>
@@ -15,5 +16,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface AdminRoleService extends IService<AdminRole> {
 
     Result getRoleList();
+
+    Result delRole(int role_id);
+
+    Result updateRole(AdminRoleUpdate dto);
 
 }

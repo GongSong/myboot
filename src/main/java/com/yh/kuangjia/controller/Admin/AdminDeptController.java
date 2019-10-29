@@ -1,8 +1,9 @@
-package com.yh.kuangjia.controller;
+package com.yh.kuangjia.controller.Admin;
 
 
 import com.yh.kuangjia.base.Result;
 import com.yh.kuangjia.models.AdminDept.AdminDeptAdd;
+import com.yh.kuangjia.models.AdminDept.AdminDeptEdit;
 import com.yh.kuangjia.models.SingleID;
 import com.yh.kuangjia.services.AdminDeptService;
 import io.swagger.annotations.Api;
@@ -48,7 +49,7 @@ public class AdminDeptController extends BaseController {
 
     @ApiOperation(value = "查看部门")
     @RequestMapping(value = "view/{dept_id}", method = RequestMethod.GET)
-    public Result view(@PathVariable("dept_id") int  dept_id) {
+    public Result view(@PathVariable("dept_id") int dept_id) {
         return service.view(dept_id);
     }
 
@@ -56,6 +57,18 @@ public class AdminDeptController extends BaseController {
     @RequestMapping(value = "add", method = RequestMethod.POST)
     public Result Add(@RequestBody AdminDeptAdd dto) {
         return service.Add(this.GetTokenAdmin().getAdminId(), dto);
+    }
+
+    @ApiOperation(value = "编辑页面的展示")
+    @RequestMapping(value = "get_info/{dept_id}", method = RequestMethod.GET)
+    public Result getInfo(@PathVariable("dept_id") int dept_id) {
+        return service.getInfo(dept_id);
+    }
+
+    @ApiOperation(value = "更新")
+    @RequestMapping(value = "update", method = RequestMethod.POST)
+    public Result Update(@RequestBody AdminDeptEdit dto) {
+        return service.Update(dto);
     }
 
 
