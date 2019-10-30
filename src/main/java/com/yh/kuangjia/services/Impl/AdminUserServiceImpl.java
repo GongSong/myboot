@@ -16,15 +16,17 @@ import com.yh.kuangjia.entity.AdminRole;
 import com.yh.kuangjia.entity.AdminUser;
 import com.yh.kuangjia.dao.AdminUserMapper;
 import com.yh.kuangjia.models.AdminUser.*;
+import com.yh.kuangjia.models.Enums.LogTypeEnum;
+import com.yh.kuangjia.services.AdminLogService;
 import com.yh.kuangjia.services.AdminLoginLogService;
 import com.yh.kuangjia.services.AdminUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yh.kuangjia.util.AdapterUtil;
 import com.yh.kuangjia.util.DateUtil;
-import com.yh.kuangjia.util.Define.DefineUtil;
+import com.yh.kuangjia.util.SysDefine.DefineUtil;
 import com.yh.kuangjia.util.IPUtil;
 import com.yh.kuangjia.util.UUIDUtil;
-import com.yh.kuangjia.util.security.MD5Util;
+import com.yh.kuangjia.util.Security.MD5Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -57,6 +59,8 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
     AdminDeptMapper adminDeptMapper;
     @Autowired
     AdminLoginLogService adminLoginLogService;
+    @Autowired
+    AdminLogService adminLogService;
 
     @Override
     public Result Login(AdminUserLogin dto) {
@@ -70,14 +74,14 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
         String md5 = MD5Util.ToMD5(MessageFormat.format("{0}${1}", dto.getUser_pwd(), user.getPwd_salt()));
         if (!md5.equals(user.getUser_pwd())) {
             //统计登录记录
-            adminLoginLogService.addLoginLog(user.getUser_name(),false);
+            adminLoginLogService.addLoginLog(user.getUser_name(), false);
             return new Result(Define.PWD_ERROR, Define.PWD_ERROR_MSG);
         }
         TokenAdmin token = new TokenAdmin();
         token.setAdminId(user.getAdmin_id());
         token.setRoleIDs(user.getRole_ids());
         //统计登录记录
-        adminLoginLogService.addLoginLog(user.getUser_name(),true);
+        adminLoginLogService.addLoginLog(user.getUser_name(), true);
         LoginUpdate(user.getAdmin_id());
         return Result.success(TokenHelper.GetAccessTokenAdmin(token));
     }
@@ -160,8 +164,8 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
                 List<String> list = Arrays.asList(o.getRole_ids().split(","));
                 list.forEach(o1 -> {
                     AdminRole adminRole = adminRoleMapper.selectOne(new QueryWrapper<AdminRole>().eq("role_id", o1));
-                    o.getRole_name_array().add(adminRole.getRole_name()+" ");
-                    o.getRole_id_array().add(Integer.parseInt(o1.replace(" ","")));
+                    o.getRole_name_array().add(adminRole.getRole_name() + " ");
+                    o.getRole_id_array().add(Integer.parseInt(o1.replace(" ", "")));
                 });
             }
         });
@@ -191,7 +195,7 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
         adminUserAdd.setLogin_times(c);
         adminUserAdd.setCreate_time(DateUtil.GetDate());
         if (mapper.insert(adminUserAdd) == 0) return new Result(1, "error");
-        adminUserAdd.setAdmin_id(adminUserAdd.getAdmin_id());
+        adminLogService.addAdminLog(adminId, LogTypeEnum.User, adminId, "新增用户：" + adminUserAdd.getUser_name());
         return Result.success();
     }
 
@@ -204,7 +208,7 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
         list.forEach(o -> {
             List<String> role_id = adminRoleMapper.selectList(new QueryWrapper<AdminRole>().eq("role_id", o)).stream().map(AdminRole::getRole_name).collect(Collectors.toList());
             adapter.setRole_name_array(role_id);
-            roles.add(Integer.parseInt(o.replace(" ","")));
+            roles.add(Integer.parseInt(o.replace(" ", "")));
         });
 
         adapter.setRole_id_array(roles);
@@ -212,7 +216,7 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
     }
 
     @Override
-    public Result updateUser(AdminUserUpdate dto) {
+    public Result updateUser(Integer admin_id, AdminUserUpdate dto) {
         if (dto.getUser_pwd() != null && !dto.getUser_pwd().equals("")) {
             String uuid = UUIDUtil.getUuid();
             String md5Pas = MD5Util.ToMD5(MessageFormat.format("{0}${1}", dto.getUser_pwd(), uuid));
@@ -230,14 +234,35 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
         adapter.setLast_login_time(DateUtil.GetDate());
         adapter.setRole_ids(role_id_array.toString().substring(1, role_id_array.toString().length() - 1));
         if (mapper.updateById(adapter) == 0) return new Result(DefineUtil.UPDATE_ERROR, DefineUtil.UPDATE_ERROR_MSG);
+        adminLogService.addAdminLog(admin_id, LogTypeEnum.User, admin_id, "修改用户：" + adapter.getUser_name());
         return Result.success();
     }
 
+    /**
+     *
+     * @param admin_id 登录人员id
+     * @param adminid  禁用/启用用户的id
+     * @return
+     */
     @Override
-    public Result updateIsDisabled(int adminid) {
+    public Result updateIsDisabled(Integer admin_id, int adminid) {
         AdminUser adminUser = mapper.selectById(adminid);
         adminUser.setIs_disabled(!adminUser.getIs_disabled());
-        if (mapper.updateById(adminUser)==0) return new Result(DefineUtil.UPDATE_ERROR,"操作失败");
+        if (mapper.updateById(adminUser) == 0) return new Result(DefineUtil.UPDATE_ERROR, "操作失败");
+        adminLogService.addAdminLog(admin_id, LogTypeEnum.User, admin_id, "操作禁用/启用功能：" + admin_id);
+        return Result.success();
+    }
+
+    /**
+     *
+     * @param admin_id  登录人员 id
+     * @param adminid   删除用户的id
+     * @return
+     */
+    @Override
+    public Result Del(Integer admin_id, int adminid) {
+       if ( mapper.deleteById(adminid)==0) return new Result(DefineUtil.DELETE_ERROR,DefineUtil.DELETE_ERROR_MSG);
+        adminLogService.addAdminLog(admin_id, LogTypeEnum.User, admin_id, "删除用户：" + adminid);
         return Result.success();
     }
 

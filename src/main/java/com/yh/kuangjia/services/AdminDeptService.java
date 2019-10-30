@@ -29,5 +29,5 @@ public interface AdminDeptService extends IService<AdminDept> {
 
     Result getInfo(int  dept_id);
 
-    Result Update(AdminDeptEdit dto);
+    Result Update(int adminID,AdminDeptEdit dto);
 }

@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.yh.kuangjia.util.HttpUtil;
 import com.yh.kuangjia.util.JsonUtil;
 import com.yh.kuangjia.util.MapObjUtil;
-import com.yh.kuangjia.util.Wx.WxExpress.WxExpressAdd;
 import org.apache.http.conn.ConnectTimeoutException;
 
 import java.net.SocketTimeoutException;
@@ -115,4 +114,5 @@ public class WXExpressUtil {
         String s = HttpUtil.doGet(requestUrl);
         return JsonUtil.json2Map(s);
     }
+
 }

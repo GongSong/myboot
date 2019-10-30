@@ -12,7 +12,7 @@ import com.yh.kuangjia.models.AdminRightGroup.AdminGroupRightUpdate;
 import com.yh.kuangjia.services.AdminRightService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yh.kuangjia.util.AdapterUtil;
-import com.yh.kuangjia.util.Define.DefineUtil;
+import com.yh.kuangjia.util.SysDefine.DefineUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

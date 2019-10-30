@@ -9,24 +9,24 @@ import com.yh.kuangjia.base.ResultList;
 import com.yh.kuangjia.entity.SysBanner;
 import com.yh.kuangjia.dao.SysBannerMapper;
 import com.yh.kuangjia.models.Enums.BannerTypeEnum;
+import com.yh.kuangjia.models.Enums.LogTypeEnum;
 import com.yh.kuangjia.models.SingleID;
 import com.yh.kuangjia.models.SysBanner.SysBannerAdd;
 import com.yh.kuangjia.models.SysBanner.SysBannerDevList;
 import com.yh.kuangjia.models.SysBanner.SysBannerEdit;
 import com.yh.kuangjia.models.SysBanner.SysBannerFilter;
+import com.yh.kuangjia.services.AdminLogService;
 import com.yh.kuangjia.services.SysBannerService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yh.kuangjia.util.ALiYun.OssUtil;
 import com.yh.kuangjia.util.AdapterUtil;
 import com.yh.kuangjia.util.CacheUtil;
 import com.yh.kuangjia.util.DateUtil;
-import com.yh.kuangjia.util.Define.DefineUtil;
+import com.yh.kuangjia.util.SysDefine.DefineUtil;
 import com.yh.kuangjia.util.EhCacheSpaces;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,6 +47,8 @@ public class SysBannerServiceImpl extends ServiceImpl<SysBannerMapper, SysBanner
     OssUtil ossUtil;
     @Autowired
     CacheUtil ehcacheUtil;
+    @Autowired
+    AdminLogService adminLogService;
 
     private String _key = "SysBannerService";
 
@@ -78,7 +80,7 @@ public class SysBannerServiceImpl extends ServiceImpl<SysBannerMapper, SysBanner
     }
 
     @Override
-    public Result Update(SingleID dto) {
+    public Result Update(Integer admin_id,SingleID dto) {
         /**
          * 清除缓存
          */
@@ -92,11 +94,12 @@ public class SysBannerServiceImpl extends ServiceImpl<SysBannerMapper, SysBanner
         if (mapper.updateById(entity) == 0) {
             return new Result(DefineUtil.UPDATE_ERROR, DefineUtil.UPDATE_ERROR_MSG);
         }
+        adminLogService.addAdminLog(admin_id, LogTypeEnum.Banner, admin_id, "更新轮播状态：" + dto.getSingle_id());
         return Result.success(entity);
     }
 
     @Override
-    public Result Delete(SingleID dto) {
+    public Result Delete(Integer admin_id,SingleID dto) {
         /**
          * 清除缓存
          */
@@ -108,11 +111,12 @@ public class SysBannerServiceImpl extends ServiceImpl<SysBannerMapper, SysBanner
         if (mapper.deleteById(dto.getSingle_id()) == 0) {
             return new Result(DefineUtil.DELETE_ERROR, DefineUtil.DELETE_ERROR_MSG);
         }
+        adminLogService.addAdminLog(admin_id, LogTypeEnum.Banner, admin_id, "删除轮播：" + dto.getSingle_id());
         return Result.success(true);
     }
 
     @Override
-    public Result Add(SysBannerAdd dto) {
+    public Result Add(Integer admin_id,SysBannerAdd dto) {
         /**
          * 清除缓存
          */
@@ -130,11 +134,12 @@ public class SysBannerServiceImpl extends ServiceImpl<SysBannerMapper, SysBanner
         if (mapper.insert(entity) == 0) {
             return new Result(DefineUtil.ADD_ERROR, DefineUtil.ADD_ERROR_MSG);
         }
+        adminLogService.addAdminLog(admin_id, LogTypeEnum.Banner, admin_id, "新增轮播：" + entity.getBanner_id());
         return Result.success(entity);
     }
 
     @Override
-    public Result Edit(SysBannerEdit dto) {
+    public Result Edit(Integer admin_id,SysBannerEdit dto) {
         /**
          * 清除缓存
          */
@@ -155,6 +160,7 @@ public class SysBannerServiceImpl extends ServiceImpl<SysBannerMapper, SysBanner
         if (mapper.updateById(entity) == 0) {
             return new Result(DefineUtil.UPDATE_ERROR, DefineUtil.UPDATE_ERROR_MSG);
         }
+        adminLogService.addAdminLog(admin_id, LogTypeEnum.Banner, admin_id, "更新轮播：" + entity.getBanner_id());
         return Result.success(entity);
     }
 

@@ -78,4 +78,33 @@ public class StringUtil {
         return "";
     }
 
+    /**
+     * 不为空
+     *
+     * @param str
+     * @return
+     */
+    public static boolean isNotBlank(String str) {
+        return !StringUtil.isBlank(str);
+    }
+
+    public static boolean isBlank(String ... str){
+        if (str == null || str.length == 0) {
+            return true;
+        }
+        for (String s : str) {
+            if (isBlank(s)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static String[] splitForArray(String string , String splitString) {
+        if (StringUtil.isBlank(string) || StringUtil.isBlank(splitString)) {
+            return null;
+        }
+        return string.split(splitString);
+    }
+
 }

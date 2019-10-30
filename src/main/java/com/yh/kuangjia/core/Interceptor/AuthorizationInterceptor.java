@@ -4,7 +4,7 @@ import com.yh.kuangjia.base.Token;
 import com.yh.kuangjia.core.annotation.IgnoreLogin;
 import com.yh.kuangjia.core.exception.MyTokenException;
 import com.yh.kuangjia.util.JsonUtil;
-import com.yh.kuangjia.util.security.AESUtil;
+import com.yh.kuangjia.util.Security.AESPKCS5Util;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -35,7 +35,7 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
                 }
             }
 
-            String access_token = AESUtil.decrypt(token);
+            String access_token = AESPKCS5Util.decrypt(token);
             if (access_token == null) {
                 throw new MyTokenException("无效token，转换实体异常，请重新登录");
             }

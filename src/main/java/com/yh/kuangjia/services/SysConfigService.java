@@ -17,5 +17,5 @@ public interface SysConfigService extends IService<SysConfig> {
 
     Result GetList(int type);
 
-    Result Update(SysConfigUpdate dto);
+    Result Update(Integer admin_id,SysConfigUpdate dto);
 }

@@ -40,13 +40,13 @@ public class AdminRoleController extends BaseController {
     @ApiOperation(value = "删除角色")
     @RequestMapping(value = "delete/{role_id}",method = RequestMethod.GET)
     public Result delRole(@PathVariable int role_id) {
-        return service.delRole(role_id);
+        return service.delRole(this.GetTokenAdmin().getAdminId(),role_id);
     }
 
     @ApiOperation(value = "修改角色")
     @RequestMapping(value = "update",method = RequestMethod.POST)
     public Result updateRole(@RequestBody AdminRoleUpdate dto) {
-        return service.updateRole(dto);
+        return service.updateRole(this.GetTokenAdmin().getAdminId(),dto);
     }
 
     @ApiOperation(value = "权限设置保存")

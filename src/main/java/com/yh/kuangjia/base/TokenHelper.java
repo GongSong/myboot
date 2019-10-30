@@ -4,7 +4,7 @@ package com.yh.kuangjia.base;
 
 import com.yh.kuangjia.util.DateUtil;
 import com.yh.kuangjia.util.JsonUtil;
-import com.yh.kuangjia.util.security.AESUtil;
+import com.yh.kuangjia.util.Security.AESPKCS5Util;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
@@ -19,7 +19,7 @@ public class TokenHelper {
      */
     public static String GetAccessTokenAdmin(TokenAdmin token) {
         token.setExpiredTime(DateUtil.AddDays(new Date(), 1));
-        return AESUtil.encrypt(JsonUtil.object2Json(token));
+        return AESPKCS5Util.encrypt(JsonUtil.object2Json(token));
     }
 
     /**
@@ -30,7 +30,7 @@ public class TokenHelper {
      */
     public static String GetAccessTokenUser(TokenUser token) {
         token.setExpiredTime(DateUtil.AddDays(new Date(), 1));
-        return AESUtil.encrypt(JsonUtil.object2Json(token));
+        return AESPKCS5Util.encrypt(JsonUtil.object2Json(token));
     }
 
     /**
@@ -41,7 +41,7 @@ public class TokenHelper {
      */
     public static String GetAccessToken(HttpServletRequest request) {
         String token = request.getHeader("Access-Token");  // 从 http 请求头中取出 token
-        return AESUtil.decrypt(token);
+        return AESPKCS5Util.decrypt(token);
     }
 
     /**

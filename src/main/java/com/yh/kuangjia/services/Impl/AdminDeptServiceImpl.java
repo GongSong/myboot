@@ -8,9 +8,11 @@ import com.yh.kuangjia.dao.AdminDeptMapper;
 import com.yh.kuangjia.entity.AdminUser;
 import com.yh.kuangjia.models.AdminDept.*;
 import com.yh.kuangjia.models.Enums.AdminDeptTypeEnum;
+import com.yh.kuangjia.models.Enums.LogTypeEnum;
 import com.yh.kuangjia.models.SingleID;
 import com.yh.kuangjia.services.AdminDeptService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.yh.kuangjia.services.AdminLogService;
 import com.yh.kuangjia.util.AdapterUtil;
 import com.yh.kuangjia.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +38,8 @@ public class AdminDeptServiceImpl extends ServiceImpl<AdminDeptMapper, AdminDept
     AdminDeptMapper mapper;
     @Autowired
     AdminUserMapper adminUserMapper;
+    @Autowired
+    AdminLogService adminLogService;
 
     @Override
     public Result Devlist() {
@@ -78,6 +82,7 @@ public class AdminDeptServiceImpl extends ServiceImpl<AdminDeptMapper, AdminDept
             return new Result(Define.DELETE_ERROR, Define.DELETE_ERROR_MSG);
         }
         //未添加操作记录
+        adminLogService.addAdminLog(adminID, LogTypeEnum.Dept, adminID, "删除部门：" + entity.getDept_name());
         return Result.success();
     }
 
@@ -117,6 +122,7 @@ public class AdminDeptServiceImpl extends ServiceImpl<AdminDeptMapper, AdminDept
         if (mapper.insert(adapter) == 0) {
             return new Result(Define.ADD_ERROR, Define.ADD_ERROR_MSG);
         }
+        adminLogService.addAdminLog(adminID, LogTypeEnum.Dept, adminID, "新增部门：" + adapter.getDept_name());
         AdminDeptContext adminDeptContext = new AdminDeptContext();
         adminDeptContext.setId(adapter.getDept_id());
         adminDeptContext.setLabel(dto.getDept_name());
@@ -135,7 +141,7 @@ public class AdminDeptServiceImpl extends ServiceImpl<AdminDeptMapper, AdminDept
     }
 
     @Override
-    public Result Update(AdminDeptEdit dto) {
+    public Result Update(int adminID,AdminDeptEdit dto) {
         AdminDept entity = mapper.selectById(dto.getDept_id());
         if (entity == null) {
             return new Result(Define.INPUT_ERROR, Define.INPUT_ERROR_MSG);
@@ -146,6 +152,7 @@ public class AdminDeptServiceImpl extends ServiceImpl<AdminDeptMapper, AdminDept
         if (mapper.updateById(entity) == 0) {
             return new Result(Define.UPDATE_ERROR, Define.UPDATE_ERROR_MSG);
         }
+        adminLogService.addAdminLog(adminID, LogTypeEnum.Dept, adminID, "编辑部门：" + entity.getDept_name());
         AdminDeptContext adminDeptContext = new AdminDeptContext();
         adminDeptContext.setId(dto.getDept_id());
         adminDeptContext.setLabel(dto.getDept_name());

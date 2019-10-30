@@ -8,7 +8,6 @@ import com.yh.kuangjia.core.annotation.IgnoreLogin;
 import com.yh.kuangjia.services.UserWxService;
 import com.yh.kuangjia.util.DateUtil;
 import com.yh.kuangjia.util.JsonUtil;
-import com.yh.kuangjia.util.StringUtil;
 import com.yh.kuangjia.util.Wx.WXAuthUtil;
 import com.yh.kuangjia.util.Wx.WXBiz.AesException;
 import com.yh.kuangjia.util.Wx.WXBiz.MessageUtil;
@@ -16,8 +15,7 @@ import com.yh.kuangjia.util.Wx.WXBiz.ReturnMan;
 import com.yh.kuangjia.util.Wx.WXBiz.WXBizMsgCrypt;
 import com.yh.kuangjia.util.Wx.WXPayUtil;
 import com.yh.kuangjia.util.Wx.WxConfig;
-import com.yh.kuangjia.util.security.AESUtil;
-import io.swagger.annotations.Api;
+import com.yh.kuangjia.util.Security.AESPKCS5Util;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.conn.ConnectTimeoutException;
@@ -61,7 +59,7 @@ public class WxPublicController extends BaseController {
                         HttpServletResponse response) {
         String referer = request.getParameter("referer");
         //加密
-        String encrypt = AESUtil.encrypt(referer);
+        String encrypt = AESPKCS5Util.encrypt(referer);
         //回调地址
         String backUrl = "https://classwx.91duobaoyu.com/api/wx/callBack";
         try {
@@ -89,7 +87,7 @@ public class WxPublicController extends BaseController {
         String replace = state.replace("#wechat_redirect", "");
         logger.info("replace" + replace);
         //解密
-        String referer = AESUtil.decrypt(replace.replace(" ", "+"));
+        String referer = AESPKCS5Util.decrypt(replace.replace(" ", "+"));
         logger.info("referer" + referer);
         //通过code换取网页授权access_token
         String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + config.getAppID()
@@ -109,7 +107,7 @@ public class WxPublicController extends BaseController {
         //获取微信用户基本信息 保存信息
 //        Integer integer = userService.loginAdd(jsonObject1, userId, n_course_id);
         token.setUserId(0);
-        String encrypt = AESUtil.encrypt(JsonUtil.object2Json(token));
+        String encrypt = AESPKCS5Util.encrypt(JsonUtil.object2Json(token));
         //重定向地址
         if (true) {
             resp.sendRedirect("http://class.91duobaoyu.com/web/?token=" + encrypt + "#/course/follow");

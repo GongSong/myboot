@@ -2,6 +2,8 @@ package com.yh.kuangjia.core.exception;
 
 import com.yh.kuangjia.base.Result;
 import com.yh.kuangjia.base.ResultCode;
+import com.yh.kuangjia.util.EmailUtil;
+import com.yh.kuangjia.util.ResourceUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +19,8 @@ import java.sql.SQLException;
 public class GlobalExceptionHandler {
 
     protected Logger logger = LoggerFactory.getLogger(getClass());
-//    @Autowired
-//    EmailUtil emailUtil;
-//    private static final String send = "243748670@qq.com";
-
+    @Autowired
+    EmailUtil emailUtil;
     /**
      * 处理空指针的异常
      *
@@ -166,7 +166,7 @@ public class GlobalExceptionHandler {
         }
         strBuf.append("**********异常信息结束**********");
         strBuf.append("\r\n");
-        //emailUtil.sendMail(e.toString(),strBuf.toString(),send);
+        //emailUtil.sendMail(e.toString(),strBuf.toString(), ResourceUtil.getValue("spring.mail.username"));
         logger.error(strBuf.toString());
     }
 }

@@ -14,6 +14,8 @@ import com.yh.kuangjia.models.Enums.LogTypeEnum;
 import com.yh.kuangjia.services.AdminLogService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yh.kuangjia.util.AdapterUtil;
+import com.yh.kuangjia.util.DateUtil;
+import com.yh.kuangjia.util.IPUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -65,5 +67,18 @@ public class AdminLogServiceImpl extends ServiceImpl<AdminLogMapper, AdminLog> i
             });
         });
         return ResultList.success(adapter,adminLogIPage.getTotal());
+    }
+
+    @Override
+    public void addAdminLog(Integer adminID, LogTypeEnum _enum, int logKeyID, String remark) {
+        AdminLog adapter = AdapterUtil.Adapter("", AdminLog.class);
+        adapter.setAdmin_id(adminID);
+        adapter.setLog_type(_enum.getCode());
+        adapter.setLog_key_id(logKeyID);
+        adapter.setRemark(remark);
+        adapter.setAdmin_ip(IPUtil.getIpAddr());
+        adapter.setCreate_date(DateUtil.GetDateInt());
+        adapter.setCreate_time(DateUtil.GetDate());
+        mapper.insert(adapter);
     }
 }

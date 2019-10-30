@@ -44,24 +44,24 @@ public class SysBannerController extends BaseController {
     @ApiOperation(value = "删除")
     @RequestMapping(value = "delete", method = RequestMethod.POST)
     public Result Delete(@RequestBody SingleID dto) {
-        return service.Delete(dto);
+        return service.Delete(this.GetTokenAdmin().getAdminId(),dto);
     }
 
     @ApiOperation(value = "新增")
     @RequestMapping(value = "add", method = RequestMethod.POST)
     public Result Add(@RequestBody SysBannerAdd dto) {
-        return service.Add(dto);
+        return service.Add(this.GetTokenAdmin().getAdminId(),dto);
     }
 
     @ApiOperation(value = "更新")
     @RequestMapping(value = "update", method = RequestMethod.POST)
     public Result Update(@RequestBody SysBannerEdit dto) {
-        return service.Edit(dto);
+        return service.Edit(this.GetTokenAdmin().getAdminId(),dto);
     }
 
     @ApiOperation(value = "更新显示状态")
     @RequestMapping(value = "is_show", method = RequestMethod.POST)
     public Result UpdateIsShow(@RequestBody SingleID dto) {
-        return service.Update(dto);
+        return service.Update(this.GetTokenAdmin().getAdminId(),dto);
     }
 }

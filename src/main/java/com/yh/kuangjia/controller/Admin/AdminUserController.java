@@ -72,18 +72,18 @@ public class AdminUserController extends BaseController {
     @ApiOperation(value = "编辑用户")
     @RequestMapping(value = "update",method = RequestMethod.POST)
     public Result updateUser(@RequestBody AdminUserUpdate dto) {
-        return service.updateUser(dto);
+        return service.updateUser(this.GetTokenAdmin().getAdminId(),dto);
     }
 
     @ApiOperation(value = "禁用操作")
     @RequestMapping(value = "disabled/{admin_id}",method = RequestMethod.GET)
     public Result updateIsDisabled(@PathVariable("admin_id")Integer admin_id) {
-        return  service.updateIsDisabled(admin_id);
+        return  service.updateIsDisabled(this.GetTokenAdmin().getAdminId(),admin_id);
     }
 
     @ApiOperation(value = "删除操作")
     @RequestMapping(value = "delete/{admin_id}",method = RequestMethod.GET)
     public Result deleteUser(@PathVariable("admin_id")Integer admin_id) {
-        return Result.success(service.removeById(admin_id));
+        return service.Del(this.GetTokenAdmin().getAdminId(),admin_id);
     }
 }

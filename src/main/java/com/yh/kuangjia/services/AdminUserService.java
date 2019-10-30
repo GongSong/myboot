@@ -31,8 +31,10 @@ public interface AdminUserService extends IService<AdminUser> {
 
     Result getInfo(int adminid);
 
-    Result updateUser(AdminUserUpdate dto);
+    Result updateUser(Integer admin_id, AdminUserUpdate dto);
 
-    Result updateIsDisabled(int adminid);
+    Result updateIsDisabled(Integer admin_id,int adminid);
+
+    Result Del(Integer admin_id,int adminid);
 
 }

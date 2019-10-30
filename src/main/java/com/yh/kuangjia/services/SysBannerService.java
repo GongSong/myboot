@@ -21,11 +21,11 @@ public interface SysBannerService extends IService<SysBanner> {
 
     ResultList GetPage(SysBannerFilter filter);
 
-    Result Update(SingleID dto);
+    Result Update(Integer admin_id,SingleID dto);
 
-    Result Delete(SingleID dto);
+    Result Delete(Integer admin_id,SingleID dto);
 
-    Result Add(SysBannerAdd dto);
+    Result Add(Integer admin_id,SysBannerAdd dto);
 
-    Result Edit(SysBannerEdit dto);
+    Result Edit(Integer admin_id,SysBannerEdit dto);
 }

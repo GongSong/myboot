@@ -17,8 +17,8 @@ public interface AdminRoleService extends IService<AdminRole> {
 
     Result getRoleList();
 
-    Result delRole(int role_id);
+    Result delRole(Integer admin_id,int role_id);
 
-    Result updateRole(AdminRoleUpdate dto);
+    Result updateRole(Integer admin_id,AdminRoleUpdate dto);
 
 }

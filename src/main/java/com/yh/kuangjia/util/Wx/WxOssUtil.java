@@ -5,7 +5,7 @@ import com.yh.kuangjia.util.DateUtil;
 import com.yh.kuangjia.util.HttpUtil;
 import com.yh.kuangjia.util.IPUtil;
 import com.yh.kuangjia.util.JsonUtil;
-import com.yh.kuangjia.util.security.CipherTextUtil;
+import com.yh.kuangjia.util.Security.AESPKCS7Util;
 import org.apache.commons.io.IOUtils;
 
 import javax.servlet.ServletInputStream;
@@ -222,7 +222,7 @@ public class WxOssUtil {
         if (m.containsKey("return_code")&&m.get("return_code").equals("SUCCESS")) {
             //获取加密信息
             String a = m.get("req_info").toString();//第二部 接下来解码加密信息
-            String s = CipherTextUtil.decryptData(a);
+            String s = AESPKCS7Util.decryptData(a);
             Map<String, String> m1 = null;
             m1 = WXPayUtil.xmlToMap(s);
             if (m1.containsKey("refund_status")&&m1.get("refund_status").equals("SUCCESS")) {

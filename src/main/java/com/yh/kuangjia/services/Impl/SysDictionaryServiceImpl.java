@@ -9,13 +9,11 @@ import com.yh.kuangjia.models.SysDictionary.SysDictionaryUpdate;
 import com.yh.kuangjia.services.SysDictionaryService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yh.kuangjia.util.CacheUtil;
-import com.yh.kuangjia.util.Define.DefineUtil;
+import com.yh.kuangjia.util.SysDefine.DefineUtil;
 import com.yh.kuangjia.util.EhCacheSpaces;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import springfox.documentation.schema.Collections;
 
-import java.text.MessageFormat;
 import java.util.List;
 import java.util.stream.Collectors;
 
