@@ -107,6 +107,18 @@
 
         <!-- END：swagger2 配置-->
 
+        <!-- elasticsearch启动器 (必须) begin-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- END：elasticsearch启动器-->
+
         <!-- mybatis-plus begin-->
         <dependency>
             <groupId>com.baomidou</groupId>
@@ -242,6 +254,11 @@
             <groupId>com.google.zxing</groupId>
             <artifactId>core</artifactId>
             <version>3.3.2</version>
+        </dependency>
+        <dependency>
+            <groupId>asm</groupId>
+            <artifactId>asm</artifactId>
+            <version>3.3.1</version>
         </dependency>
 
     </dependencies>

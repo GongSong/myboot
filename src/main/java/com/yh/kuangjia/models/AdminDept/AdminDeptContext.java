@@ -1,7 +1,10 @@
 package com.yh.kuangjia.models.AdminDept;
 
+import lombok.ToString;
+
 import java.io.Serializable;
 
+@ToString
 public class AdminDeptContext implements Serializable {
     private Integer id;
 

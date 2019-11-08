@@ -142,9 +142,7 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
     public ResultList getUserList(AdminUserFilter filter) {
         List<AdminDept> adminDepts = adminDeptMapper.selectList(new QueryWrapper<AdminDept>());
         QueryWrapper<AdminUser> queryWrapper = new QueryWrapper<>();
-        if (filter.getField().equals(1) && null != filter.getKeyword() && !filter.getKeyword().equals("")) {
-            queryWrapper.eq("user_name", filter.getKeyword());
-        }
+        queryWrapper.eq(filter.getField().equals(1) && null != filter.getKeyword() && !filter.getKeyword().equals("") ? true : false, "user_name", filter.getKeyword());
         if (null != filter.getDept_id() && !filter.getDept_id().equals("") && !filter.getDept_id().equals(0)) {
             queryWrapper.eq("dept_id", filter.getDept_id());
         }
@@ -239,7 +237,6 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
     }
 
     /**
-     *
      * @param admin_id 登录人员id
      * @param adminid  禁用/启用用户的id
      * @return
@@ -254,14 +251,13 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
     }
 
     /**
-     *
-     * @param admin_id  登录人员 id
-     * @param adminid   删除用户的id
+     * @param admin_id 登录人员 id
+     * @param adminid  删除用户的id
      * @return
      */
     @Override
     public Result Del(Integer admin_id, int adminid) {
-       if ( mapper.deleteById(adminid)==0) return new Result(DefineUtil.DELETE_ERROR,DefineUtil.DELETE_ERROR_MSG);
+        if (mapper.deleteById(adminid) == 0) return new Result(DefineUtil.DELETE_ERROR, DefineUtil.DELETE_ERROR_MSG);
         adminLogService.addAdminLog(admin_id, LogTypeEnum.User, admin_id, "删除用户：" + adminid);
         return Result.success();
     }

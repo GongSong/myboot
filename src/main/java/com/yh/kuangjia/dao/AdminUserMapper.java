@@ -3,6 +3,7 @@ package com.yh.kuangjia.dao;
 import com.yh.kuangjia.entity.AdminUser;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.yh.kuangjia.models.AdminUser.AdminUserRightList;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 

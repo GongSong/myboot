@@ -20,8 +20,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -51,7 +51,7 @@ public class AdminDeptServiceImpl extends ServiceImpl<AdminDeptMapper, AdminDept
         List<AdminDept> adminDepts = mapper.selectList(new QueryWrapper<AdminDept>());
         AdminDept adminDept = adminDepts.parallelStream().filter(f -> f.getParent_dept_id().equals(0)).findFirst().orElse(null);
         AdminDeptContext adminDeptContext = new AdminDeptContext();
-        if (adminDept != null) {
+        if (null != adminDept) {
             adminDeptContext.setId(adminDept.getDept_id());
             adminDeptContext.setLabel(adminDept.getDept_name());
         }
@@ -69,6 +69,23 @@ public class AdminDeptServiceImpl extends ServiceImpl<AdminDeptMapper, AdminDept
         adminDeptContext.setChildren(children);
         return Result.success(adminDeptContext);
     }
+
+    @Override
+    public Result tree2() {
+        List<AdminDept> adminDepts = mapper.selectList(new QueryWrapper<AdminDept>());
+        AdminDept adminDept = adminDepts.parallelStream().filter(f -> f.getParent_dept_id().equals(0)).findFirst().orElse(null);
+        List<AdminDept> collect = adminDepts.parallelStream().filter(f -> !f.getParent_dept_id().equals(0)).collect(Collectors.toList());
+        AdminDeptDevList adapter = AdapterUtil.Adapter(adminDept, AdminDeptDevList.class);
+        Map<Integer, List<AdminDept>> collect1 = collect.stream().collect(Collectors.groupingBy(AdminDept::getParent_dept_id));
+        List<AdminDeptDevList> adapter1 = AdapterUtil.Adapter(collect, AdminDeptDevList.class);
+        adapter1.sort((h1,h2)->h2.getDept_id().compareTo(h1.getDept_id()));
+
+        adapter.setChildren(adapter1);
+        return Result.success(adapter);
+    }
+
+
+
 
     @Override
     @Transactional
@@ -109,8 +126,8 @@ public class AdminDeptServiceImpl extends ServiceImpl<AdminDeptMapper, AdminDept
         AdminDept adapter = AdapterUtil.Adapter(dto, AdminDept.class);
         adapter.setCreate_time(DateUtil.GetDate());
         adapter.setParent_dept_id(dto.getParent_dept_id());
-        AdminDept adminDept = mapper.selectOne(new QueryWrapper<AdminDept>().eq("parent_dept_id",dto.getParent_dept_id()));
-        if ( null==adminDept ) {
+        AdminDept adminDept = mapper.selectOne(new QueryWrapper<AdminDept>().eq("parent_dept_id", dto.getParent_dept_id()));
+        if (null == adminDept) {
             AdminDept adminDept1 = mapper.selectById(dto.getParent_dept_id());
             adapter.setDept_code(adminDept1.getDept_code() + "100");
         } else {
@@ -135,13 +152,13 @@ public class AdminDeptServiceImpl extends ServiceImpl<AdminDeptMapper, AdminDept
         AdminDeptList adapter = AdapterUtil.Adapter(adminDept, AdminDeptList.class);
         adapter.setDept_type(adminDept.getDept_type().intValue());
         if (!adminDept.getParent_dept_id().equals(0)) {
-            adapter.setParent_dept_name(mapper.selectOne(new QueryWrapper<AdminDept>().eq("dept_id",adminDept.getParent_dept_id())).getDept_name());
+            adapter.setParent_dept_name(mapper.selectOne(new QueryWrapper<AdminDept>().eq("dept_id", adminDept.getParent_dept_id())).getDept_name());
         }
         return Result.success(adapter);
     }
 
     @Override
-    public Result Update(int adminID,AdminDeptEdit dto) {
+    public Result Update(int adminID, AdminDeptEdit dto) {
         AdminDept entity = mapper.selectById(dto.getDept_id());
         if (entity == null) {
             return new Result(Define.INPUT_ERROR, Define.INPUT_ERROR_MSG);

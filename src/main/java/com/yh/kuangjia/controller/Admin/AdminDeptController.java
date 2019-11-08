@@ -41,6 +41,12 @@ public class AdminDeptController extends BaseController {
         return service.tree();
     }
 
+    @ApiOperation(value = "管理列表")
+    @RequestMapping(value = "tree2", method = RequestMethod.GET)
+    public Result tree2() {
+        return service.tree2();
+    }
+
     @ApiOperation(value = "删除")
     @RequestMapping(value = "delete", method = RequestMethod.POST)
     public Result Delete(@RequestBody SingleID dto) {
