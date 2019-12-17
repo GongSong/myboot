@@ -27,6 +27,7 @@ import com.yh.kuangjia.util.SysDefine.DefineUtil;
 import com.yh.kuangjia.util.IPUtil;
 import com.yh.kuangjia.util.UUIDUtil;
 import com.yh.kuangjia.util.Security.MD5Util;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;

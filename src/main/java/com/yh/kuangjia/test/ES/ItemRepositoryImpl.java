@@ -9,7 +9,8 @@ import org.springframework.data.elasticsearch.repository.ElasticsearchRepository
 
 import java.util.Optional;
 
-public class ItemRepositoryImpl implements ElasticsearchRepository<Item,Long> {
+public class ItemRepositoryImpl implements ElasticsearchRepository<Item,String> {
+
 
     @Override
     public <S extends Item> S index(S s) {
@@ -72,12 +73,12 @@ public class ItemRepositoryImpl implements ElasticsearchRepository<Item,Long> {
     }
 
     @Override
-    public Optional<Item> findById(Long aLong) {
+    public Optional<Item> findById(String s) {
         return Optional.empty();
     }
 
     @Override
-    public boolean existsById(Long aLong) {
+    public boolean existsById(String s) {
         return false;
     }
 
@@ -87,7 +88,7 @@ public class ItemRepositoryImpl implements ElasticsearchRepository<Item,Long> {
     }
 
     @Override
-    public Iterable<Item> findAllById(Iterable<Long> iterable) {
+    public Iterable<Item> findAllById(Iterable<String> iterable) {
         return null;
     }
 
@@ -97,7 +98,7 @@ public class ItemRepositoryImpl implements ElasticsearchRepository<Item,Long> {
     }
 
     @Override
-    public void deleteById(Long aLong) {
+    public void deleteById(String s) {
 
     }
 

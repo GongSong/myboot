@@ -153,7 +153,7 @@ public class WxOssUtil {
         data.put("total_fee", String.valueOf(new Double(price * 100).intValue()));
         data.put("refund_fee", String.valueOf(new Double(refundprice * 100).intValue()));
         data.put("sign_type", "MD5");
-        data.put("mch_id", "1313100401");
+        data.put("mch_id", config.getMchID());
         data.put("sign", WXPayUtil.generateSignature(data, config.getKey(), WXPayConstants.SignType.MD5));
         return wxpay.refund(data);
     }

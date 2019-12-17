@@ -2,6 +2,7 @@ package com.yh.kuangjia.controller.Admin;
 
 
 import com.yh.kuangjia.base.Result;
+import com.yh.kuangjia.base.Tree.Result1;
 import com.yh.kuangjia.models.AdminDept.AdminDeptAdd;
 import com.yh.kuangjia.models.AdminDept.AdminDeptEdit;
 import com.yh.kuangjia.models.SingleID;
@@ -39,12 +40,6 @@ public class AdminDeptController extends BaseController {
     @RequestMapping(value = "tree", method = RequestMethod.GET)
     public Result tree() {
         return service.tree();
-    }
-
-    @ApiOperation(value = "管理列表")
-    @RequestMapping(value = "tree2", method = RequestMethod.GET)
-    public Result tree2() {
-        return service.tree2();
     }
 
     @ApiOperation(value = "删除")

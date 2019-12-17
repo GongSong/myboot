@@ -13,15 +13,15 @@ import com.yh.kuangjia.models.SingleID;
 import com.yh.kuangjia.services.AdminDeptService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yh.kuangjia.services.AdminLogService;
+import com.yh.kuangjia.base.Tree.BuildTree;
+import com.yh.kuangjia.base.Tree.Tree;
 import com.yh.kuangjia.util.AdapterUtil;
 import com.yh.kuangjia.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.MessageFormat;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -48,44 +48,18 @@ public class AdminDeptServiceImpl extends ServiceImpl<AdminDeptMapper, AdminDept
 
     @Override
     public Result tree() {
+        List<Tree<AdminDept>> trees = new ArrayList<Tree<AdminDept>>();
         List<AdminDept> adminDepts = mapper.selectList(new QueryWrapper<AdminDept>());
-        AdminDept adminDept = adminDepts.parallelStream().filter(f -> f.getParent_dept_id().equals(0)).findFirst().orElse(null);
-        AdminDeptContext adminDeptContext = new AdminDeptContext();
-        if (null != adminDept) {
-            adminDeptContext.setId(adminDept.getDept_id());
-            adminDeptContext.setLabel(adminDept.getDept_name());
-        }
-        List<AdminDeptContext> children = children(adminDeptContext.getId());
-        children.forEach(o -> {
-            List<AdminDeptContext> children1 = children(o.getId());
-            o.setChildren(children1);
-            if (children1.size() != 0) {
-                children1.forEach(o1 -> {
-                    List<AdminDeptContext> children2 = children(o1.getId());
-                    o1.setChildren(children2);
-                });
-            }
+        adminDepts.forEach(o->{
+            Tree<AdminDept> tree = new Tree<AdminDept>();
+            tree.setId(o.getDept_id().toString());
+            tree.setParent_itemtypeid(o.getParent_dept_id().toString());
+            tree.setLabel(o.getDept_name());
+            trees.add(tree);
         });
-        adminDeptContext.setChildren(children);
-        return Result.success(adminDeptContext);
+        Tree<AdminDept> t = BuildTree.build(trees);
+        return Result.success(t);
     }
-
-    @Override
-    public Result tree2() {
-        List<AdminDept> adminDepts = mapper.selectList(new QueryWrapper<AdminDept>());
-        AdminDept adminDept = adminDepts.parallelStream().filter(f -> f.getParent_dept_id().equals(0)).findFirst().orElse(null);
-        List<AdminDept> collect = adminDepts.parallelStream().filter(f -> !f.getParent_dept_id().equals(0)).collect(Collectors.toList());
-        AdminDeptDevList adapter = AdapterUtil.Adapter(adminDept, AdminDeptDevList.class);
-        Map<Integer, List<AdminDept>> collect1 = collect.stream().collect(Collectors.groupingBy(AdminDept::getParent_dept_id));
-        List<AdminDeptDevList> adapter1 = AdapterUtil.Adapter(collect, AdminDeptDevList.class);
-        adapter1.sort((h1,h2)->h2.getDept_id().compareTo(h1.getDept_id()));
-
-        adapter.setChildren(adapter1);
-        return Result.success(adapter);
-    }
-
-
-
 
     @Override
     @Transactional

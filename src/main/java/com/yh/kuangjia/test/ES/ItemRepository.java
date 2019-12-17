@@ -13,8 +13,5 @@ import org.springframework.stereotype.Service;
  * @Date: 2018/9/29 0:50
  */
 
-@Component
-@Service("ItemRepository")
-public interface ItemRepository extends ElasticsearchRepository<Item, Long> {
-
+public interface ItemRepository extends ElasticsearchRepository<Item, String> {
 }

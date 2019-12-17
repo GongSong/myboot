@@ -21,8 +21,6 @@ public interface AdminDeptService extends IService<AdminDept> {
 
     Result tree();
 
-    Result tree2();
-
     Result Delete(int adminID, SingleID dto);
 
     Result view(int  dept_id);

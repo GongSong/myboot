@@ -9,14 +9,18 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
+import java.io.Serializable;
+
 @Data
 @NoArgsConstructor
 //indexName代表所以名称,type代表表名称
 @Document(indexName = "wantu_notice_info", type = "doc")
-public class Item {
+public class Item  implements Serializable {
+
+    private static final long serialVersionUID = 6320548148250372657L;
 
     @Id
-    private Long id;
+    private String  id;
 
     @Field(type = FieldType.Text, analyzer = "ik_max_word")
     private String title; //标题
@@ -33,7 +37,7 @@ public class Item {
     @Field(index = false, type = FieldType.Keyword)
     private String images; // 图片地址
 
-    public Item(Long id, String title, String category, String brand, Double price, String images) {
+    public Item(String id, String title, String category, String brand, Double price, String images) {
         this.id = id;
         this.title = title;
         this.category = category;
